@@ -1,0 +1,17 @@
+{
+  "name": "m2t",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "stop": "npx kill-port 5173 5174 5000 || true",
+    "dev": "npm run stop && concurrently -k -n server,client -c green,cyan \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "build": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "kill-port": "^2.0.1"
+  }
+}
