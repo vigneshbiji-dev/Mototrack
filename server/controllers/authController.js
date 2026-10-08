@@ -1,5 +1,6 @@
 import User from '../models/User.js'
 import generateToken from '../utils/generateToken.js'
+import { validateEmail } from '../utils/validateEmail.js'
 
 export const registerUser = async (req, res) => {
   try {
@@ -9,16 +10,21 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Please provide all fields' })
     }
 
+    const emailCheck = validateEmail(email)
+    if (!emailCheck.valid) {
+      return res.status(400).json({ message: emailCheck.message })
+    }
+
     if (password.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters' })
     }
 
-    const userExists = await User.findOne({ email })
+    const userExists = await User.findOne({ email: emailCheck.email })
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' })
     }
 
-    const user = await User.create({ name, email, password })
+    const user = await User.create({ name: name.trim(), email: emailCheck.email, password })
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -53,9 +59,13 @@ export const updateProfile = async (req, res) => {
     const { name, email } = req.body
     if (name) user.name = name.trim()
     if (email && email !== user.email) {
-      const exists = await User.findOne({ email: email.toLowerCase() })
+      const emailCheck = validateEmail(email)
+      if (!emailCheck.valid) {
+        return res.status(400).json({ message: emailCheck.message })
+      }
+      const exists = await User.findOne({ email: emailCheck.email })
       if (exists) return res.status(400).json({ message: 'Email already in use' })
-      user.email = email.toLowerCase()
+      user.email = emailCheck.email
     }
 
     const updated = await user.save()
@@ -119,7 +129,12 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Please provide email and password' })
     }
 
-    const user = await User.findOne({ email })
+    const emailCheck = validateEmail(email)
+    if (!emailCheck.valid) {
+      return res.status(400).json({ message: emailCheck.message })
+    }
+
+    const user = await User.findOne({ email: emailCheck.email })
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }

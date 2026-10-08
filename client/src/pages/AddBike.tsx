@@ -28,7 +28,7 @@ export default function AddBike() {
     registrationNumber: '',
     fuelType: 'Petrol',
     engineCapacity: '',
-    currentOdometer: 0,
+    currentOdometer: '',
   })
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function AddBike() {
           registrationNumber: bike.registrationNumber || '',
           fuelType: bike.fuelType || 'Petrol',
           engineCapacity: bike.engineCapacity ? String(bike.engineCapacity) : '',
-          currentOdometer: bike.currentOdometer || 0,
+          currentOdometer: bike.currentOdometer ? String(bike.currentOdometer) : '',
         })
         if (bike.imageUrl) setExistingImageUrl(bike.imageUrl)
       })
@@ -60,7 +60,7 @@ export default function AddBike() {
     const { name, value } = e.target
     setForm((prev) => ({
       ...prev,
-      [name]: name === 'year' || name === 'currentOdometer' ? Number(value) : value,
+      [name]: name === 'year' ? Number(value) : value,
     }))
   }
 
@@ -102,7 +102,9 @@ export default function AddBike() {
     setLoading(true)
     const payload = {
       ...form,
+      year: Number(form.year),
       engineCapacity: form.engineCapacity ? Number(form.engineCapacity) : undefined,
+      currentOdometer: form.currentOdometer ? Number(form.currentOdometer) : 0,
     }
     const imageOptions = {
       image: imageFile,
@@ -221,7 +223,15 @@ export default function AddBike() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm text-text-muted">Current Odometer (km)</label>
-              <input name="currentOdometer" type="number" value={form.currentOdometer} onChange={handleChange} className={inputClass} />
+              <input
+                name="currentOdometer"
+                type="number"
+                min={0}
+                value={form.currentOdometer}
+                onChange={handleChange}
+                className={inputClass}
+                placeholder="e.g. 5000"
+              />
             </div>
           </div>
 

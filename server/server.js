@@ -11,7 +11,9 @@ import analyticsRoutes from './routes/analyticsRoutes.js'
 import serviceRoutes from './routes/serviceRoutes.js'
 import expenseRoutes from './routes/expenseRoutes.js'
 import reminderRoutes from './routes/reminderRoutes.js'
+import maintenanceRoutes from './routes/maintenanceRoutes.js'
 import errorHandler from './middleware/errorMiddleware.js'
+import { seedMaintenanceSchedules } from './config/seedMaintenance.js'
 
 dotenv.config()
 
@@ -34,10 +36,12 @@ app.use('/api/analytics', analyticsRoutes)
 app.use('/api/services', serviceRoutes)
 app.use('/api/expenses', expenseRoutes)
 app.use('/api/reminders', reminderRoutes)
+app.use('/api/maintenance', maintenanceRoutes)
 
 app.use(errorHandler)
 
-connectDB().then(() => {
+connectDB().then(async () => {
+  await seedMaintenanceSchedules()
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
   })

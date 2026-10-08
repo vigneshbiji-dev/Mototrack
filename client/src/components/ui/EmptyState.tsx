@@ -7,6 +7,7 @@ interface EmptyStateProps {
   description: string
   actionLabel?: string
   actionTo?: string
+  onAction?: () => void
 }
 
 export default function EmptyState({
@@ -15,6 +16,7 @@ export default function EmptyState({
   description,
   actionLabel,
   actionTo,
+  onAction,
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center py-16 text-center">
@@ -25,6 +27,11 @@ export default function EmptyState({
       <p className="mt-2 max-w-sm text-sm text-text-muted">{description}</p>
       {actionLabel && actionTo && (
         <Button to={actionTo} className="mt-6">
+          {actionLabel}
+        </Button>
+      )}
+      {actionLabel && onAction && (
+        <Button type="button" onClick={onAction} className="mt-6">
           {actionLabel}
         </Button>
       )}

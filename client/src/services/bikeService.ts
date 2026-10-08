@@ -1,4 +1,5 @@
 import api from './api'
+import type { SmartServiceReminder } from './maintenanceService'
 
 export interface BikeInput {
   brand: string
@@ -44,6 +45,36 @@ export const createBike = async (bike: BikeInput, options: BikeSaveOptions = {})
 
 export const getBikeById = async (id: string) => {
   const { data } = await api.get(`/bikes/${id}`)
+  return data
+}
+
+export interface BikeSummary {
+  bike: BikeInput & { _id: string; year: number; createdAt?: string }
+  stats: {
+    totalFuel: number
+    totalService: number
+    totalExpenses: number
+    totalOwnership: number
+    fuelCount: number
+    serviceCount: number
+    expenseCount: number
+  }
+  lastService: { date: string; serviceType: string; totalCost: number; odometer?: number } | null
+  schedule: {
+    manufacturer: string
+    model: string
+    verified: boolean
+    serviceIntervalKm?: number
+    serviceIntervalMonths?: number
+    source?: string
+    sourceUrl?: string
+    notes?: string
+  } | null
+  serviceReminder: SmartServiceReminder
+}
+
+export const getBikeSummary = async (id: string) => {
+  const { data } = await api.get<BikeSummary>(`/bikes/${id}/summary`)
   return data
 }
 

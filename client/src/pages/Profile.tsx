@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { changePassword, getProfile, updateProfile } from '../services/authService'
 import { useAuth } from '../context/AuthContext'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage'
+import { getEmailError } from '../utils/validateEmail'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
@@ -30,9 +31,14 @@ export default function Profile() {
     e.preventDefault()
     setError('')
     setMessage('')
+    const emailError = getEmailError(profile.email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
     setSaving(true)
     try {
-      await updateProfile(profile)
+      await updateProfile({ ...profile, email: profile.email.trim() })
       setMessage('Profile updated successfully')
     } catch (err) {
       setError(getApiErrorMessage(err))

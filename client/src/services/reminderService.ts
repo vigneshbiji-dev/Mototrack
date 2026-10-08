@@ -30,7 +30,14 @@ export interface ReminderFilters {
 }
 
 export const getReminders = async (filters: ReminderFilters = {}) => {
-  const { data } = await api.get<Reminder[]>('/reminders', { params: filters })
+  const params: Record<string, string> = {}
+  if (filters.bike) params.bike = filters.bike
+  if (filters.type) params.type = filters.type
+  if (filters.from) params.from = filters.from
+  if (filters.to) params.to = filters.to
+  if (filters.completed !== undefined) params.completed = String(filters.completed)
+
+  const { data } = await api.get<Reminder[]>('/reminders', { params })
   return data
 }
 

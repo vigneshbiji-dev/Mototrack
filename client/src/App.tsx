@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import MyGarage from './pages/MyGarage'
+import BikeDetail from './pages/BikeDetail'
 import AddBike from './pages/AddBike'
 import FuelLogs from './pages/FuelLogs'
 import AddFuel from './pages/AddFuel'
@@ -34,6 +35,7 @@ function App() {
               <Route path="/garage" element={<MyGarage />} />
               <Route path="/garage/add" element={<AddBike />} />
               <Route path="/garage/edit/:id" element={<AddBike />} />
+              <Route path="/garage/:id" element={<BikeDetail />} />
               <Route path="/fuel" element={<FuelLogs />} />
               <Route path="/fuel/add" element={<AddFuel />} />
               <Route path="/fuel/edit/:id" element={<AddFuel />} />

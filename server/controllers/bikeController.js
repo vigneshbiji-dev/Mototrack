@@ -1,5 +1,10 @@
 import Bike from '../models/Bike.js'
+import FuelLog from '../models/FuelLog.js'
+import ServiceLog from '../models/ServiceLog.js'
+import Expense from '../models/Expense.js'
 import { deleteBikeImageFile } from '../utils/imageFile.js'
+import { findScheduleForBike } from '../services/maintenanceMatchService.js'
+import { calculateSmartServiceReminder } from '../services/serviceReminderService.js'
 
 const parseBikeBody = (body) => ({
   brand: body.brand,
@@ -56,6 +61,45 @@ export const getBikeById = async (req, res) => {
       return res.status(404).json({ message: 'Bike not found' })
     }
     res.json(bike)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+export const getBikeSummary = async (req, res) => {
+  try {
+    const bike = await Bike.findOne({ _id: req.params.id, owner: req.user })
+    if (!bike) return res.status(404).json({ message: 'Bike not found' })
+
+    const bikeId = bike._id
+    const [fuelLogs, serviceLogs, expenses] = await Promise.all([
+      FuelLog.find({ bike: bikeId }),
+      ServiceLog.find({ bike: bikeId }).sort({ date: -1 }),
+      Expense.find({ bike: bikeId }),
+    ])
+
+    const totalFuel = fuelLogs.reduce((s, l) => s + (l.totalAmount || 0), 0)
+    const totalService = serviceLogs.reduce((s, l) => s + (l.totalCost || 0), 0)
+    const totalExpenses = expenses.reduce((s, l) => s + (l.amount || 0), 0)
+
+    const schedule = await findScheduleForBike(bike.brand, bike.model)
+    const serviceReminder = await calculateSmartServiceReminder(bike)
+
+    res.json({
+      bike,
+      stats: {
+        totalFuel,
+        totalService,
+        totalExpenses,
+        totalOwnership: totalFuel + totalService + totalExpenses,
+        fuelCount: fuelLogs.length,
+        serviceCount: serviceLogs.length,
+        expenseCount: expenses.length,
+      },
+      lastService: serviceLogs[0] || null,
+      schedule,
+      serviceReminder,
+    })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

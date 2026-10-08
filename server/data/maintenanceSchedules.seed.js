@@ -1,0 +1,93 @@
+/**
+ * India-focused M2T maintenance catalog (10 models).
+ * Only entries with verified: true include manufacturer intervals — never fabricated numbers.
+ */
+export const MAINTENANCE_SCHEDULE_SEED = [
+  {
+    manufacturer: 'Triumph',
+    model: 'Speed 400',
+    market: 'India',
+    verified: true,
+    serviceIntervalKm: 16000,
+    serviceIntervalMonths: 12,
+    source: 'Official Triumph India (T-Series)',
+    sourceUrl: 'https://www.triumphmotorcycles.co.in/',
+    notes: 'Periodic service: 16,000 km or 12 months, whichever comes first.',
+  },
+  {
+    manufacturer: 'Triumph',
+    model: 'Scrambler 400 X',
+    market: 'India',
+    verified: true,
+    serviceIntervalKm: 16000,
+    serviceIntervalMonths: 12,
+    source: 'Official Triumph India (T-Series)',
+    sourceUrl: 'https://www.triumphmotorcycles.co.in/',
+    notes: 'Same T-Series interval as Speed 400: 16,000 km or 12 months.',
+  },
+  {
+    manufacturer: 'Royal Enfield',
+    model: 'Goan Classic 350',
+    market: 'India',
+    verified: true,
+    serviceIntervalKm: 5000,
+    serviceIntervalMonths: 6,
+    source: 'Royal Enfield India (model service page)',
+    sourceUrl: 'https://www.royalenfield.com/',
+    notes: '6 months / 5,000 km, whichever comes first.',
+  },
+  {
+    manufacturer: 'Bajaj',
+    model: 'Pulsar NS400Z',
+    market: 'India',
+    verified: true,
+    firstService: { km: 500, months: 1 },
+    recurringService: { km: 5000, months: 4 },
+    source: 'Bajaj Auto NS400Z owner manual (paid service interval)',
+    sourceUrl: 'https://www.bajajauto.com/',
+    notes: 'Free initial services precede paid interval: 5,000 km or 120 days from last service.',
+  },
+  // Catalog targets — intervals added only after official verification
+  {
+    manufacturer: 'Royal Enfield',
+    model: 'Classic 350',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official RE variant-specific verification.',
+  },
+  {
+    manufacturer: 'Royal Enfield',
+    model: 'Hunter 350',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official RE variant-specific verification.',
+  },
+  {
+    manufacturer: 'Yamaha',
+    model: 'MT-15',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official Yamaha India source.',
+  },
+  {
+    manufacturer: 'Honda',
+    model: 'CB350',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official Honda India source.',
+  },
+  {
+    manufacturer: 'TVS',
+    model: 'Apache RTR 200 4V',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official TVS source.',
+  },
+  {
+    manufacturer: 'Hero',
+    model: 'Xpulse 200 4V',
+    market: 'India',
+    verified: false,
+    notes: 'Catalog entry. Interval pending official Hero source.',
+  },
+]

@@ -76,12 +76,12 @@ export default function MyGarage() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((bike) => (
-            <div key={bike._id} className="relative">
+            <div key={bike._id} className="relative flex flex-col">
               <BikeCard {...bike} />
-              <div className="absolute top-3 right-3 flex gap-1">
+              <div className="pointer-events-none absolute top-3 right-3 z-10 flex gap-1">
                 <Link
                   to={`/garage/edit/${bike._id}`}
-                  className="rounded-lg bg-bg/80 p-2 text-text-muted transition-colors hover:text-accent"
+                  className="pointer-events-auto rounded-lg bg-bg/90 p-2 text-text-muted shadow-sm transition-colors hover:text-accent"
                   aria-label="Edit bike"
                 >
                   <Pencil size={16} />
@@ -89,7 +89,7 @@ export default function MyGarage() {
                 <button
                   type="button"
                   onClick={() => handleDelete(bike._id, `${bike.brand} ${bike.model}`)}
-                  className="rounded-lg bg-bg/80 p-2 text-text-muted transition-colors hover:text-red-400"
+                  className="pointer-events-auto rounded-lg bg-bg/90 p-2 text-text-muted shadow-sm transition-colors hover:text-red-400"
                   aria-label="Delete bike"
                 >
                   <Trash2 size={16} />

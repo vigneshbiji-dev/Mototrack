@@ -4,6 +4,7 @@ import { ArrowRight, Mail, Lock } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage'
+import { getEmailError } from '../utils/validateEmail'
 
 const inputClass =
   'w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] py-4 pr-4 pl-12 text-base text-white outline-none transition-all placeholder:text-text-subtle focus:border-accent/50 focus:bg-white/[0.06] focus:ring-2 focus:ring-accent/20'
@@ -19,9 +20,14 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    const emailError = getEmailError(email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
     setLoading(true)
     try {
-      await login(email, password)
+      await login(email.trim(), password)
       navigate('/dashboard')
     } catch (err: unknown) {
       setError(getApiErrorMessage(err, 'Login failed'))

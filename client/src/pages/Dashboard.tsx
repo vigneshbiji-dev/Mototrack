@@ -114,7 +114,9 @@ export default function Dashboard() {
           </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {data.bikes.slice(0, 3).map((bike) => <BikeCard key={bike._id} {...bike} />)}
+            {data.bikes.slice(0, 3).map((bike) => (
+              <BikeCard key={bike._id} {...bike} />
+            ))}
           </div>
         )}
       </div>

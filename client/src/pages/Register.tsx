@@ -4,6 +4,7 @@ import { ArrowRight, Mail, Lock, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
 import { getApiErrorMessage } from '../utils/getApiErrorMessage'
+import { getEmailError } from '../utils/validateEmail'
 
 const inputClass =
   'w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] py-4 pr-4 pl-12 text-base text-white outline-none transition-all placeholder:text-text-subtle focus:border-accent/50 focus:bg-white/[0.06] focus:ring-2 focus:ring-accent/20'
@@ -27,9 +28,20 @@ export default function Register() {
       return
     }
 
+    const emailError = getEmailError(email)
+    if (emailError) {
+      setError(emailError)
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
     setLoading(true)
     try {
-      await register(name, email, password)
+      await register(name.trim(), email.trim(), password)
       navigate('/dashboard')
     } catch (err: unknown) {
       setError(getApiErrorMessage(err, 'Registration failed'))
