@@ -72,10 +72,10 @@ npm run dev
 - [x] Landing page (M2T branding, green theme)
 - [x] Login / Register pages
 - [x] Basic Dashboard + Add Bike
-- [ ] Fuel module
-- [ ] Service module
-- [ ] Expenses
-- [ ] Analytics with real data
+- [X] Fuel module
+- [X] Service module
+- [X] Expenses
+- [X] Analytics with real data
 
 ## Data Model
 
